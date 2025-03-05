@@ -2,18 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::middleware('guest')->group(function () {
-    Route::get('/login', function () {
-        return view('welcome');
-    })->name('login');
-    
-    Route::post('/login', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store'])
-        ->name('login.store');
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
 });
 
 Route::get('/dashboard', function () {
