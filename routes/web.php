@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
@@ -15,6 +16,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
 });
 
+// User Routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [ProductController::class, 'index'])->name('dashboard');
     
@@ -22,10 +24,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/products/{product}/order', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/products/{product}/order', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders/{order}/success', [OrderController::class, 'success'])->name('orders.success');
+    Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Admin Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/products', [AdminController::class, 'products'])->name('products');
+    Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::patch('/orders/{order}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.status');
 });
 
 require __DIR__.'/auth.php';

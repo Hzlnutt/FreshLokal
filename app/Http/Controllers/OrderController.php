@@ -39,4 +39,14 @@ class OrderController extends Controller
     {
         return view('orders.success', compact('order'));
     }
+
+    public function history()
+    {
+        $orders = Order::where('user_id', auth()->id())
+                      ->with('product')
+                      ->latest()
+                      ->paginate(10);
+        
+        return view('orders.history', compact('orders'));
+    }
 } 
