@@ -15,11 +15,23 @@ class Product extends Model
         'price',
         'image',
         'category',
+        'stock',
+        'status',
         'is_available'
     ];
 
     public function getFormattedPriceAttribute()
     {
         return 'Rp ' . number_format($this->price, 0, ',', '.');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($product) {
+            // Update status berdasarkan stock
+            $product->status = $product->stock > 0 ? 'ada' : 'habis';
+        });
     }
 } 

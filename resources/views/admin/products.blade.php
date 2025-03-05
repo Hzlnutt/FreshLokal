@@ -211,8 +211,8 @@
                                     <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
                                     <td>{{ $product->stock }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $product->stock > 0 ? 'success' : 'danger' }}">
-                                            {{ $product->stock > 0 ? 'Tersedia' : 'Habis' }}
+                                        <span class="badge bg-{{ $product->status === 'ada' ? 'success' : 'danger' }}">
+                                            {{ ucfirst($product->status) }}
                                         </span>
                                     </td>
                                     <td>
