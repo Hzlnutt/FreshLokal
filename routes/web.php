@@ -40,7 +40,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    
+    // Product Management
     Route::get('/products', [AdminController::class, 'products'])->name('products');
+    Route::post('/products', [AdminController::class, 'storeProduct'])->name('products.store');
+    Route::put('/products/{product}', [AdminController::class, 'updateProduct'])->name('products.update');
+    Route::delete('/products/{product}', [AdminController::class, 'destroyProduct'])->name('products.destroy');
+    
     Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::patch('/orders/{order}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.status');
