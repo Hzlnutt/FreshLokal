@@ -12,8 +12,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         
         <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-        
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">  
         <style>
             body {
                 font-family: 'Poppins', sans-serif;
@@ -96,68 +95,82 @@
             }
         </style>
     </head>
-    <body>
+    <body class="bg-light">
         <div class="container">
-            <div class="login-container">
-                <div class="card">
-                    <div class="card-header">
-                        <img src="https://cdn-icons-png.flaticon.com/512/2553/2553691.png" alt="Logo" class="logo">
-                        <h4 class="mb-0">Selamat Datang di FreshLokal</h4>
-                        <p class="text-muted">Silakan masuk ke akun Anda</p>
-                    </div>
-                    <div class="card-body p-4">
-                        <form method="POST" action="{{ route('login') }}">
-                            @csrf
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text border-end-0">
-                                        <i class="fas fa-envelope text-muted"></i>
-                                    </span>
-                                    <input type="email" class="form-control" name="email" placeholder="Email" required>
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4 p-sm-5">
+                            <!-- Logo dan Header -->
+                            <div class="text-center mb-4">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2553/2553691.png" alt="Logo" class="img-fluid mb-4" style="width: 80px;">
+                                <h4 class="fw-bold">Selamat Datang di FreshLokal</h4>
+                                <p class="text-muted">Silakan masuk ke akun Anda</p>
+                            </div>
+
+                            <!-- Form Login -->
+                            <form method="POST" action="{{ route('login') }}">
+                                @csrf
+                                <div class="mb-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent border-end-0">
+                                            <i class="fas fa-envelope text-muted"></i>
+                                        </span>
+                                        <input type="email" class="form-control border-start-0 ps-0" name="email" placeholder="Email" required>
+                                    </div>
+                                    @error('email')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                @error('email')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text border-end-0">
-                                        <i class="fas fa-lock text-muted"></i>
-                                    </span>
-                                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                
+                                <div class="mb-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent border-end-0">
+                                            <i class="fas fa-lock text-muted"></i>
+                                        </span>
+                                        <input type="password" class="form-control border-start-0 ps-0" name="password" placeholder="Password" required>
+                                    </div>
+                                    @error('password')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                @error('password')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            
-                            <div class="mb-3 d-flex justify-content-between align-items-center">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                                    <label class="form-check-label" for="remember">Ingat saya</label>
+                                
+                                <div class="mb-4 d-flex justify-content-between align-items-center">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                        <label class="form-check-label" for="remember">Ingat saya</label>
+                                    </div>
+                                    <a href="{{ route('password.request') }}" class="text-decoration-none">Lupa password?</a>
                                 </div>
-                                <a href="{{ route('password.request') }}" class="text-decoration-none">Lupa password?</a>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary btn-login w-100">Masuk</button>
-                            
-                            <div class="divider">
-                                <span>atau masuk dengan</span>
-                            </div>
-                            
-                            <div class="social-buttons text-center">
-                                <a href="#" class="btn btn-light"><i class="fab fa-google"></i></a>
-                                <a href="#" class="btn btn-light"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" class="btn btn-light"><i class="fab fa-twitter"></i></a>
-                            </div>
-                            
-                            <div class="text-center mt-4">
-                                <p class="mb-0">Belum punya akun? 
-                                    <a href="{{ route('register') }}" class="text-decoration-none">Daftar sekarang</a>
-                                </p>
-                            </div>
-                        </form>
+                                
+                                <button type="submit" class="btn btn-primary w-100 py-2 mb-4 fw-semibold">Masuk</button>
+                                
+                                <div class="position-relative mb-4">
+                                    <hr class="text-muted">
+                                    <div class="position-absolute top-50 start-50 translate-middle bg-white px-3">
+                                        <span class="text-muted">atau masuk dengan</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-center gap-2 mb-4">
+                                    <a href="#" class="btn btn-outline-secondary rounded-circle p-2">
+                                        <i class="fab fa-google"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-outline-secondary rounded-circle p-2">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-outline-secondary rounded-circle p-2">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <p class="mb-0">Belum punya akun? 
+                                        <a href="{{ route('register') }}" class="text-decoration-none">Daftar sekarang</a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
