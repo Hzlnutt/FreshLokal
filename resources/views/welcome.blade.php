@@ -29,6 +29,7 @@
                 border-radius: 15px;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             }
+
             .card-header {
                 background: #ffffff;
                 border-bottom: none;
@@ -166,3 +167,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
+
+
+sek ono sing salah oke
+lek tailwind emange gak lansung a sya koyok bootstrap
