@@ -12,14 +12,8 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response|SymfonyResponse
     {
-        // Jika user bukan admin, redirect ke dashboard user
         if (!Auth::check() || !Auth::user()->isAdmin()) {
             return redirect()->route('dashboard')->with('error', 'Akses ditolak! Anda tidak memiliki hak akses admin.');
-        }
-
-        // Jika user mengakses /dashboard dan dia adalah admin, redirect ke admin dashboard
-        if ($request->is('dashboard') && Auth::user()->isAdmin()) {
-            return redirect()->route('admin.dashboard');
         }
 
         return $next($request);

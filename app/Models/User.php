@@ -40,15 +40,15 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
-    public function isAdmin()
+    /**
+     * Check if the user is an admin.
+     */
+    public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }

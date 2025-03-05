@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>FreshLokal - Login</title>
         
         <!-- Bootstrap CSS -->
@@ -25,17 +26,41 @@
                                 <img src="https://cdn-icons-png.flaticon.com/512/2553/2553691.png" alt="Logo" class="img-fluid mb-4" style="width: 80px;">
                                 <h4 class="fw-bold">Selamat Datang di FreshLokal</h4>
                                 <p class="text-muted">Silakan masuk ke akun Anda</p>
+                            </div>
+
+                            <!-- Session Status -->
+                            @if (session('status'))
+                                <div class="alert alert-success mb-4" role="alert">
+                                    {{ session('status') }}
                                 </div>
+                            @endif
+
+                            <!-- Validation Errors -->
+                            @if ($errors->any())
+                                <div class="alert alert-danger mb-4">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
                             <!-- Form Login -->
-                            <form method="POST" action="{{ route('login') }}">
+                            <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate>
                                 @csrf
                                 <div class="mb-4">
                                     <div class="input-group">
                                         <span class="input-group-text bg-transparent border-end-0">
                                             <i class="fas fa-envelope text-muted"></i>
                                         </span>
-                                        <input type="email" class="form-control border-start-0 ps-0" name="email" placeholder="Email" required>
+                                        <input type="email" 
+                                               class="form-control border-start-0 ps-0 @error('email') is-invalid @enderror" 
+                                               name="email" 
+                                               value="{{ old('email') }}"
+                                               placeholder="Email" 
+                                               required 
+                                               autofocus>
                                     </div>
                                     @error('email')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
@@ -47,7 +72,11 @@
                                         <span class="input-group-text bg-transparent border-end-0">
                                             <i class="fas fa-lock text-muted"></i>
                                         </span>
-                                        <input type="password" class="form-control border-start-0 ps-0" name="password" placeholder="Password" required>
+                                        <input type="password" 
+                                               class="form-control border-start-0 ps-0 @error('password') is-invalid @enderror" 
+                                               name="password" 
+                                               placeholder="Password" 
+                                               required>
                                     </div>
                                     @error('password')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
@@ -59,10 +88,14 @@
                                         <input type="checkbox" class="form-check-input" id="remember" name="remember">
                                         <label class="form-check-label" for="remember">Ingat saya</label>
                                     </div>
-                                    <a href="{{ route('password.request') }}" class="text-decoration-none">Lupa password?</a>
+                                    @if (Route::has('password.request'))
+                                        <a href="{{ route('password.request') }}" class="text-decoration-none">Lupa password?</a>
+                                    @endif
                                 </div>
 
-                                <button type="submit" class="btn btn-primary w-100 py-2 mb-4 fw-semibold">Masuk</button>
+                                <button type="submit" class="btn btn-primary w-100 py-2 mb-4 fw-semibold">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Masuk
+                                </button>
                                 
                                 <div class="position-relative mb-4">
                                     <hr class="text-muted">

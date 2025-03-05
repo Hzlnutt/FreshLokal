@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
@@ -18,7 +19,12 @@ Route::middleware('guest')->group(function () {
 
 // User Routes
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [ProductController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', function() {
+        if (Auth::user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+        return app(ProductController::class)->index();
+    })->name('dashboard');
     
     // Order routes
     Route::get('/products/{product}/order', [OrderController::class, 'show'])->name('orders.show');
