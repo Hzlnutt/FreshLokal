@@ -26,14 +26,14 @@
                                 <img src="https://cdn-icons-png.flaticon.com/512/2553/2553691.png" alt="Logo" class="img-fluid mb-4" style="width: 80px;">
                                 <h4 class="fw-bold">Selamat Datang di FreshLokal</h4>
                                 <p class="text-muted">Silakan masuk ke akun Anda</p>
-                            </div>
+                        </div>
 
                             <!-- Session Status -->
                             @if (session('status'))
                                 <div class="alert alert-success mb-4" role="alert">
                                     {{ session('status') }}
                                 </div>
-                            @endif
+                        @endif
 
                             <!-- Validation Errors -->
                             @if ($errors->any())
