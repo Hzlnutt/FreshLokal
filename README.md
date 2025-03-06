@@ -1,71 +1,318 @@
-<<<<<<< HEAD
-# FreshLokal
-Repository Project FreshLokal
-=======
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# FreshLokal API Documentation
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Authentication
 
-## About Laravel
+### Login
+```http
+POST /api/login
+```
+Request Body:
+```json
+{
+    "email": "user@example.com",
+    "password": "password123"
+}
+```
+Response:
+```json
+{
+    "status": "success",
+    "data": {
+        "user": {
+            "id": 1,
+            "name": "User Name",
+            "email": "user@example.com",
+            "role": "user"
+        },
+        "token": "YOUR_AUTH_TOKEN"
+    }
+}
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Register
+```http
+POST /api/register
+```
+Request Body:
+```json
+{
+    "name": "User Name",
+    "email": "user@example.com",
+    "password": "password123"
+}
+```
+Response: Same as login response
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Logout
+```http
+POST /api/logout
+```
+Headers:
+```
+Authorization: Bearer YOUR_AUTH_TOKEN
+```
+Response:
+```json
+{
+    "status": "success",
+    "message": "Berhasil logout"
+}
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Get Current User
+```http
+GET /api/user
+```
+Headers:
+```
+Authorization: Bearer YOUR_AUTH_TOKEN
+```
+Response:
+```json
+{
+    "status": "success",
+    "data": {
+        "user": {
+            "id": 1,
+            "name": "User Name",
+            "email": "user@example.com",
+            "role": "user",
+            "email_verified_at": null,
+            "created_at": "2024-03-06T12:00:00.000000Z",
+            "updated_at": "2024-03-06T12:00:00.000000Z"
+        }
+    }
+}
+```
 
-## Learning Laravel
+## Users (Admin Only)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Get All Users
+```http
+GET /api/users
+```
+Headers:
+```
+Authorization: Bearer YOUR_ADMIN_TOKEN
+```
+Response:
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 1,
+            "name": "Admin",
+            "email": "admin@admin.com",
+            "role": "admin",
+            "email_verified_at": null,
+            "created_at": "2024-03-06T12:00:00.000000Z",
+            "updated_at": "2024-03-06T12:00:00.000000Z"
+        }
+    ]
+}
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Products
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Get All Products
+```http
+GET /api/products
+```
+Headers:
+```
+Authorization: Bearer YOUR_AUTH_TOKEN
+```
+Response:
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 1,
+            "name": "Product Name",
+            "description": "Product Description",
+            "price": 50000,
+            "formatted_price": "Rp 50.000",
+            "image": "http://localhost:8000/images/products/image.jpg",
+            "stock": 10,
+            "status": "ada",
+            "category": "Category"
+        }
+    ]
+}
+```
 
-## Laravel Sponsors
+### Search Products
+```http
+GET /api/products/search?q=keyword
+```
+Headers:
+```
+Authorization: Bearer YOUR_AUTH_TOKEN
+```
+Response: Same as Get All Products
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Get Product Detail
+```http
+GET /api/products/{id}
+```
+Headers:
+```
+Authorization: Bearer YOUR_AUTH_TOKEN
+```
+Response:
+```json
+{
+    "status": "success",
+    "data": {
+        "id": 1,
+        "name": "Product Name",
+        "description": "Product Description",
+        "price": 50000,
+        "formatted_price": "Rp 50.000",
+        "image": "http://localhost:8000/images/products/image.jpg",
+        "stock": 10,
+        "status": "ada",
+        "category": "Category"
+    }
+}
+```
 
-### Premium Partners
+## Orders (Admin Only)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Get All Orders
+```http
+GET /api/orders
+```
+Headers:
+```
+Authorization: Bearer YOUR_ADMIN_TOKEN
+```
+Response:
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 1,
+            "user": {
+                "id": 2,
+                "name": "User Name",
+                "email": "user@example.com"
+            },
+            "product": {
+                "id": 1,
+                "name": "Product Name",
+                "price": 50000
+            },
+            "quantity": 2,
+            "total_price": 100000,
+            "formatted_total_price": "Rp 100.000",
+            "status": "pending",
+            "shipping_address": "Shipping Address",
+            "phone_number": "081234567890",
+            "notes": "Order Notes",
+            "created_at": "2024-03-06 12:00:00",
+            "updated_at": "2024-03-06 12:00:00"
+        }
+    ]
+}
+```
 
-## Contributing
+### Get Order Detail
+```http
+GET /api/orders/{id}
+```
+Headers:
+```
+Authorization: Bearer YOUR_ADMIN_TOKEN
+```
+Response:
+```json
+{
+    "status": "success",
+    "data": {
+        "id": 1,
+        "user": {
+            "id": 2,
+            "name": "User Name",
+            "email": "user@example.com"
+        },
+        "product": {
+            "id": 1,
+            "name": "Product Name",
+            "price": 50000
+        },
+        "quantity": 2,
+        "total_price": 100000,
+        "formatted_total_price": "Rp 100.000",
+        "status": "pending",
+        "shipping_address": "Shipping Address",
+        "phone_number": "081234567890",
+        "notes": "Order Notes",
+        "created_at": "2024-03-06 12:00:00",
+        "updated_at": "2024-03-06 12:00:00"
+    }
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Update Order Status
+```http
+PATCH /api/orders/{id}/status
+```
+Headers:
+```
+Authorization: Bearer YOUR_ADMIN_TOKEN
+```
+Request Body:
+```json
+{
+    "status": "paid" // Options: pending, paid, shipped, completed
+}
+```
+Response:
+```json
+{
+    "status": "success",
+    "message": "Status pesanan berhasil diupdate",
+    "data": {
+        "id": 1,
+        "status": "paid"
+    }
+}
+```
 
-## Code of Conduct
+## Error Responses
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Unauthorized (401)
+```json
+{
+    "status": "error",
+    "message": "Unauthorized. Silakan login terlebih dahulu."
+}
+```
 
-## Security Vulnerabilities
+### Forbidden (403)
+```json
+{
+    "status": "error",
+    "message": "Forbidden. Anda tidak memiliki akses."
+}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Not Found (404)
+```json
+{
+    "status": "error",
+    "message": "Data tidak ditemukan"
+}
+```
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
->>>>>>> 09f698b (Initial commit)
+### Validation Error (400)
+```json
+{
+    "status": "error",
+    "message": "Validation error message"
+}
+```
