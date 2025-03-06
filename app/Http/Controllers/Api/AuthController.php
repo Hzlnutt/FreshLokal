@@ -16,21 +16,18 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'device_name' => 'required',
         ]);
 
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Email atau password salah.'],
-            ]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Email atau password salah.'
+            ], 401);
         }
 
-        // Hapus token lama untuk device yang sama (optional)
-        $user->tokens()->where('name', $request->device_name)->delete();
-
-        $token = $user->createToken($request->device_name)->plainTextToken;
+        $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',
@@ -50,8 +47,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'device_name' => 'required',
+            'password' => 'required|string|min:8',
         ]);
 
         $user = User::create([
@@ -60,7 +56,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $token = $user->createToken($request->device_name)->plainTextToken;
+        $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',
@@ -77,7 +73,6 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // Hapus token yang digunakan saat ini
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
