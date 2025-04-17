@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>FreshLokal - Marketplace</title>
         
-        
+
 
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h4 class="mb-1">
-                        <i class="fas fa-store me-2"></i> FreshLokal Marketplaces
+                        <i class="fas fa-store me-2"></i> FreshLokal Marketplacess
                     </h4>
                     <p class="text-muted mb-0">Temukan produk segar dan berkualitas</p>
                 </div>
