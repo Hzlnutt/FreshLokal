@@ -25,7 +25,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h4 class="mb-1">
-                        <i class="fas fa-store me-2"></i> FreshLokal Marketplacess
+                        <i class="fas fa-store me-2"></i> FreshLokal Marketplace
                     </h4>
                     <p class="text-muted mb-0">Temukan produk segar dan berkualitas</p>
                 </div>
