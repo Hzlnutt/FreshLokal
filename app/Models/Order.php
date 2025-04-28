@@ -17,6 +17,7 @@ class Order extends Model
         'status',
         'shipping_address',
         'phone_number',
+        'no_rekening',
         'notes'
     ];
 
@@ -33,5 +34,10 @@ class Order extends Model
     public function getFormattedTotalPriceAttribute()
     {
         return 'Rp ' . number_format($this->total_price, 0, ',', '.');
+    }
+
+    public function getIdAttribute()
+    {
+        return $this->attributes['id'];
     }
 } 

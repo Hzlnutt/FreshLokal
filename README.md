@@ -268,7 +268,7 @@ Authorization: Bearer YOUR_ADMIN_TOKEN
 Request Body:
 ```json
 {
-    "status": "paid" // Options: pending, paid, shipped, completed
+    "status": "accepted" // Options: pending, accepted, paid, shipped, completed
 }
 ```
 Response:
@@ -278,7 +278,7 @@ Response:
     "message": "Status pesanan berhasil diupdate",
     "data": {
         "id": 1,
-        "status": "paid"
+        "status": "accepted"
     }
 }
 ```

@@ -67,14 +67,14 @@
                     <div class="card border-0 shadow-sm">
                         <div class="card-body text-center p-5">
                             <div class="mb-4">
-                                <i class="fas fa-check-circle text-success fa-5x"></i>
+                                <i class="fas fa-check-circle text-primary fa-5x"></i>
                             </div>
                             <h2 class="mb-4">Pesanan Berhasil Dibuat!</h2>
                             <p class="text-muted mb-4">Terima kasih telah berbelanja di FreshLokal</p>
                             
-                            <div class="card bg-light mb-4">
+                            <div class="card border-0 bg-light mb-4">
                                 <div class="card-body">
-                                    <h5 class="card-title mb-4">Detail Pesanan</h5>
+                                    <h5 class="card-title mb-4 text-primary">Detail Pesanan</h5>
                                     <div class="row">
                                         <div class="col-md-6 text-start">
                                             <p class="mb-1"><strong>Nomor Pesanan:</strong></p>
@@ -82,7 +82,14 @@
                                             
                                             <p class="mb-1"><strong>Status:</strong></p>
                                             <p>
-                                                <span class="badge bg-warning">{{ ucfirst($order->status) }}</span>
+                                                <span class="badge bg-{{ 
+                                                    $order->status === 'completed' ? 'success' : 
+                                                    ($order->status === 'pending' ? 'warning' : 
+                                                    ($order->status === 'shipped' ? 'info' : 
+                                                    ($order->status === 'accepted' ? 'primary' : 'secondary')))
+                                                }}">
+                                                    {{ ucfirst($order->status) }}
+                                                </span>
                                             </p>
                                             
                                             <p class="mb-1"><strong>Tanggal Pesanan:</strong></p>
@@ -102,9 +109,19 @@
                                 </div>
                             </div>
 
-                            <div class="card bg-light mb-4">
+                            <div class="card border-0 bg-light mb-4">
                                 <div class="card-body">
-                                    <h5 class="card-title mb-4">Informasi Pengiriman</h5>
+                                    <h5 class="card-title mb-4 text-primary">Informasi Pembayaran</h5>
+                                    <div class="text-start">
+                                        <p class="mb-1"><strong>Nomor Rekening:</strong></p>
+                                        <p class="text-muted">{{ $order->no_rekening }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card border-0 bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4 text-primary">Informasi Pengiriman</h5>
                                     <div class="text-start">
                                         <p class="mb-1"><strong>Alamat Pengiriman:</strong></p>
                                         <p class="text-muted">{{ $order->shipping_address }}</p>

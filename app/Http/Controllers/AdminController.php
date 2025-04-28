@@ -158,7 +158,7 @@ class AdminController extends Controller
     public function updateOrderStatus(Order $order, Request $request)
     {
         $request->validate([
-            'status' => 'required|in:pending,paid,shipped,completed'
+            'status' => 'required|in:pending,accepted,paid,shipped,completed'
         ]);
 
         $order->update([

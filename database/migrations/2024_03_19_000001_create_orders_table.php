@@ -14,9 +14,10 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity')->default(1);
             $table->decimal('total_price', 10, 2);
-            $table->string('status')->default('pending'); // pending, paid, shipped, delivered
+            $table->string('status')->default('pending'); // pending, accepted, paid, shipped, completed
             $table->string('shipping_address');
             $table->string('phone_number');
+            $table->string('no_rekening')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
         });

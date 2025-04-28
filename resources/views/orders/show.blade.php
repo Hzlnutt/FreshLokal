@@ -110,6 +110,13 @@
                                     <input type="text" class="form-control" name="phone_number" required>
                                 </div>
 
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-credit-card me-1"></i> Nomor Rekening
+                                    </label>
+                                    <input type="text" class="form-control" name="no_rekening" placeholder="Masukkan nomor rekening Anda" required>
+                                </div>
+
                                 <div class="mb-4">
                                     <label class="form-label">
                                         <i class="fas fa-sticky-note me-1"></i> Catatan

@@ -20,7 +20,7 @@ Route::middleware('guest')->group(function () {
 // User Routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function() {
-        if (Auth::user()->isAdmin()) {
+        if (Auth::user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
         return app(ProductController::class)->index();

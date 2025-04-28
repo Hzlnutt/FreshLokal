@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class OrderController extends Controller
 {
@@ -19,20 +20,24 @@ class OrderController extends Controller
             'quantity' => 'required|integer|min:1',
             'shipping_address' => 'required|string',
             'phone_number' => 'required|string',
+            'no_rekening' => 'required|string',
             'notes' => 'nullable|string'
         ]);
 
-        $order = new Order();
-        $order->user_id = auth()->id();
-        $order->product_id = $product->id;
-        $order->quantity = $request->quantity;
-        $order->total_price = $product->price * $request->quantity;
-        $order->shipping_address = $request->shipping_address;
-        $order->phone_number = $request->phone_number;
-        $order->notes = $request->notes;
-        $order->save();
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'product_id' => $product->id,
+            'quantity' => $request->quantity,
+            'total_price' => $product->price * $request->quantity,
+            'shipping_address' => $request->shipping_address,
+            'phone_number' => $request->phone_number,
+            'no_rekening' => $request->no_rekening,
+            'notes' => $request->notes,
+            'status' => 'pending'
+        ]);
 
-        return redirect()->route('orders.success', $order)->with('success', 'Pesanan berhasil dibuat!');
+        // Redirect langsung ke success
+        return redirect()->route('orders.success', ['order' => $order])->with('success', 'Pesanan berhasil dibuat!');
     }
 
     public function success(Order $order)
