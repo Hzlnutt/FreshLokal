@@ -81,7 +81,7 @@
                 box-shadow: none;
             }
             .form-control::placeholder {
-                color: #b3b3b3; 
+                color: #b3b3b3;
             }
         </style>
     </head>
@@ -206,9 +206,21 @@
                                     </td>
                                     <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $order->id }}">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
+                                        <div class="btn-group">
+                                            @if($order->status === 'pending')
+                                            <form action="{{ route('admin.orders.status', $order->id) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="status" value="accepted">
+                                                <button type="submit" class="btn btn-success btn-sm me-1" title="Terima Pesanan">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </form>
+                                            @endif
+                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $order->id }}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
 
@@ -228,6 +240,7 @@
                                                         <label class="form-label">Status</label>
                                                         <select class="form-select" name="status" required>
                                                             <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                                            <option value="accepted" {{ $order->status === 'accepted' ? 'selected' : '' }}>Accepted</option>
                                                             <option value="paid" {{ $order->status === 'paid' ? 'selected' : '' }}>Paid</option>
                                                             <option value="shipped" {{ $order->status === 'shipped' ? 'selected' : '' }}>Shipped</option>
                                                             <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Completed</option>
