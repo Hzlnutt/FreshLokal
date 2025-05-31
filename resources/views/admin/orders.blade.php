@@ -81,7 +81,7 @@
                 box-shadow: none;
             }
             .form-control::placeholder {
-                color: #b3b3b3;
+                color: #b3b3b3; 
             }
         </style>
     </head>
@@ -206,21 +206,9 @@
                                     </td>
                                     <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
-                                        <div class="btn-group">
-                                            @if($order->status === 'pending')
-                                            <form action="{{ route('admin.orders.status', $order->id) }}" method="POST">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="status" value="accepted">
-                                                <button type="submit" class="btn btn-success btn-sm me-1" title="Terima Pesanan">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-                                            </form>
-                                            @endif
-                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $order->id }}">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                        </div>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateStatusModal{{ $order->id }}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
                                     </td>
                                 </tr>
 
@@ -240,7 +228,6 @@
                                                         <label class="form-label">Status</label>
                                                         <select class="form-select" name="status" required>
                                                             <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                                            <option value="accepted" {{ $order->status === 'accepted' ? 'selected' : '' }}>Accepted</option>
                                                             <option value="paid" {{ $order->status === 'paid' ? 'selected' : '' }}>Paid</option>
                                                             <option value="shipped" {{ $order->status === 'shipped' ? 'selected' : '' }}>Shipped</option>
                                                             <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Completed</option>
@@ -272,7 +259,7 @@
                         {{ $orders->links() }}
                     </div>
                 </div>
-                @endif anu sya iso ditambahno sistem pembayaran ndek admin e a dadi status e gak pending terus , soale ndek admin gaiso koyok accept order status e ke pending kabeh.  lah iyo a/. isok accept ngunu? yaopo cikk. ono sing awakmu update a, gaono blas. cak 100% made in china for real ma.de  made by. iki repo e paling baru tekan aku? iyo gorong tak pull blas delok en dewe gorong tak pull
+                @endif
             </div>
         </div>
 

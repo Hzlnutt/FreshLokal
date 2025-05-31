@@ -24,6 +24,13 @@ class OrderController extends Controller
             'notes' => 'nullable|string'
         ]);
 
+        // Reduce product stock
+        $product->decrement('stock', $request->quantity);
+
+        if ($product->stock < 0) {
+            return redirect()->back()->withErrors(['quantity' => 'Stok produk tidak mencukupi.']);
+        }
+
         $order = Order::create([
             'user_id' => auth()->id(),
             'product_id' => $product->id,
@@ -54,4 +61,4 @@ class OrderController extends Controller
         
         return view('orders.history', compact('orders'));
     }
-} 
+}
