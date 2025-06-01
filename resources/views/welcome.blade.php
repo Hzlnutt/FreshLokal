@@ -105,7 +105,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center gap-2 mb-4">
-                                    <a href="#" class="btn btn-outline-secondary rounded-circle p-2">
+                                    <a href="http://localhost:8000/auth/google" class="btn btn-outline-secondary rounded-circle p-2">
                                         <i class="fab fa-google"></i>
                                     </a>
                                     <a href="#" class="btn btn-outline-secondary rounded-circle p-2">
@@ -131,7 +131,7 @@
         <!-- Bootstrap Bundle JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
-</html>
+</html> 
 
 
 sek ono sing salah oke
