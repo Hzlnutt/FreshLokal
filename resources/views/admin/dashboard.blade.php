@@ -348,7 +348,7 @@
                 <div class="card h-100">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="fas fa-chart-line me-2"></i> Pendapatan Bulan Ini
+                            <i class="fas fa-chart-line me-2"></i> Pendapatan Harian Bulan {{ Carbon\Carbon::now()->translatedFormat('F Y') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -421,61 +421,71 @@
 
     <!-- Chart Scripts -->
     <script>
-    // Revenue Chart
-    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-    const revenueChart = new Chart(revenueCtx, {
-        type: 'line',
-        data: {
-            labels: [
-                'Minggu ' + (new Date().getWeek() - 3),
-                'Minggu ' + (new Date().getWeek() - 2),
-                'Minggu ' + (new Date().getWeek() - 1),
-                'Minggu ' + new Date().getWeek()
-            ],
-            datasets: [{
-                label: 'Pendapatan (Rp)',
-                data: @json($revenueData),
-                backgroundColor: 'rgba(45, 134, 89, 0.2)',
-                borderColor: 'rgba(45, 134, 89, 1)',
-                borderWidth: 2,
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return 'Rp ' + context.raw.toLocaleString('id-ID');
-                        }
+    // Revenue Chart - Harian
+const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+const revenueChart = new Chart(revenueCtx, {
+    type: 'bar', // Ganti menjadi bar chart untuk tampilan harian
+    data: {
+        labels: @json($dayLabels),
+        datasets: [{
+            label: 'Pendapatan Harian (Rp)',
+            data: @json($revenueData),
+            backgroundColor: 'rgba(45, 134, 89, 0.7)',
+            borderColor: 'rgba(45, 134, 89, 1)',
+            borderWidth: 1,
+            borderRadius: 4, // Untuk rounded corners
+            hoverBackgroundColor: 'rgba(45, 134, 89, 0.9)'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false // Sembunyikan legend untuk tampilan lebih clean
+            },
+            tooltip: {
+                callbacks: {
+                    title: function(context) {
+                        return 'Tanggal ' + context[0].label;
+                    },
+                    label: function(context) {
+                        return 'Pendapatan: Rp ' + context.raw.toLocaleString('id-ID');
                     }
+                },
+                displayColors: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        if (value >= 1000000) {
+                            return 'Rp ' + (value/1000000).toFixed(1) + 'jt';
+                        }
+                        return 'Rp ' + value.toLocaleString('id-ID');
+                    }
+                },
+                grid: {
+                    color: 'rgba(0,0,0,0.05)'
                 }
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return 'Rp ' + value.toLocaleString('id-ID');
-                        }
-                    }
+            x: {
+                grid: {
+                    display: false
                 }
             }
         }
-    });
+    }
+});
 
     // Order Status Chart
     const orderStatusCtx = document.getElementById('orderStatusChart').getContext('2d');
     const orderStatusChart = new Chart(orderStatusCtx, {
         type: 'doughnut',
         data: {
-            labels: ['Pending', 'Accepted', 'Paid', 'Shipped', 'Completed'],
+            labels: ['Pending', 'Diterima', 'Dibayar', 'Dikirim', 'Selesai'],
             datasets: [{
                 data: [
                     @json($orderStatusData['pending']),
@@ -504,22 +514,45 @@
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            cutout: '70%',
             plugins: {
                 legend: {
                     position: 'right',
+                    labels: {
+                        font: {
+                            family: 'Poppins',
+                            size: 12
+                        },
+                        padding: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += context.raw + ' pesanan';
+                            return label;
+                        }
+                    },
+                    titleFont: {
+                        family: 'Poppins',
+                        size: 14
+                    },
+                    bodyFont: {
+                        family: 'Poppins',
+                        size: 12
+                    }
                 }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
             }
         }
     });
-
-    // Tambahkan method getWeek() ke Date prototype untuk mendapatkan nomor minggu
-    Date.prototype.getWeek = function() {
-        var date = new Date(this.getTime());
-        date.setHours(0, 0, 0, 0);
-        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-        var week1 = new Date(date.getFullYear(), 0, 4);
-        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-    };
 </script>
 </body>
 </html>

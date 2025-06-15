@@ -18,7 +18,7 @@ class AdminController extends Controller
         $totalProducts = Product::count();
         $totalOrders = Order::count();
         $totalUsers = User::where('role', 'user')->count();
-        $totalRevenue = Order::where('status', 'completed')->sum('total_price');
+        $totalRevenue = Order::where('status', 'accepted')->sum('total_price');
         
         // Recent orders
         $recentOrders = Order::with(['user', 'product'])
@@ -26,15 +26,23 @@ class AdminController extends Controller
             ->take(10)
             ->get();
 
-        // Revenue data for the chart (last 4 weeks)
+         // Data grafik pendapatan harian bulan ini
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+        $daysInMonth = Carbon::now()->daysInMonth;
+        
         $revenueData = [];
-        for ($i = 3; $i >= 0; $i--) {
-            $startDate = Carbon::now()->subWeeks($i)->startOfWeek();
-            $endDate = Carbon::now()->subWeeks($i)->endOfWeek();
+        $dayLabels = [];
+        
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $date = Carbon::create($currentYear, $currentMonth, $day);
             
-            $revenueData[] = Order::where('status', 'completed')
-                ->whereBetween('created_at', [$startDate, $endDate])
+            $revenue = Order::where('status', 'accepted')
+                ->whereDate('created_at', $date->format('Y-m-d'))
                 ->sum('total_price');
+            
+            $revenueData[] = $revenue ?: 0;
+            $dayLabels[] = $date->format('d M');
         }
 
         // Order status distribution for pie chart
@@ -53,7 +61,8 @@ class AdminController extends Controller
             'totalRevenue',
             'recentOrders',
             'revenueData',
-            'orderStatusData'
+            'orderStatusData',
+            'dayLabels' // Tambahkan ini
         ));
     }
 
