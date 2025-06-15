@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="id">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'FreshLokal') }}</title>
+    <title>Keranjang Belanja - FreshLokal</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -42,7 +40,6 @@
             background: linear-gradient(135deg, #f8fffe 0%, #f0f9f4 100%);
             color: var(--dark-text);
             line-height: 1.6;
-            padding-top: 70px; /* Untuk navbar fixed */
         }
 
         /* Navigation Enhancement */
@@ -57,6 +54,53 @@
             font-weight: 700;
             color: var(--primary-green) !important;
             font-size: 1.5rem;
+        }
+
+        
+        /* Hero Section for Cart */
+        .cart-hero {
+            background: linear-gradient(135deg, rgba(45, 134, 89, 0.9), rgba(61, 169, 107, 0.8));
+            color: white;
+            padding: 100px 0 70px; /* Diperbesar sedikit dari sebelumnya */
+            margin-top: -24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cart-hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cart-hero h1 {
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1.5rem; /* Ditambah dari 1rem */
+            font-size: 2.5rem; /* Ukuran font lebih besar */
+        }
+
+        .cart-hero .lead {
+            font-weight: 300;
+            font-size: 1.25rem; /* Sedikit lebih besar */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem; /* Tambahkan margin bottom */
+            line-height: 1.5; /* Tinggi line lebih nyaman */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .cart-hero {
+                padding: 80px 0 50px;
+            }
+            
+            .cart-hero h1 {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+            
+            .cart-hero .lead {
+                font-size: 1.1rem;
+            }
         }
 
         /* Enhanced Buttons */
@@ -76,7 +120,99 @@
             background: linear-gradient(135deg, #1e6b42 0%, #2d8659 100%);
         }
 
-        /* Alert Enhancement */
+        .btn-danger {
+            border-radius: 50px;
+            padding: 12px 30px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Cart Table Styles */
+        .cart-table {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(45, 134, 89, 0.1);
+        }
+
+        .cart-table thead {
+            background-color: var(--light-green);
+        }
+
+        .cart-table th {
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+
+        .product-category {
+            font-size: 0.9rem;
+            color: var(--muted-text);
+        }
+
+        .price-text {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--light-green);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-green);
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            margin: 0 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        /* Empty Cart Styles */
+        .empty-cart {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(45, 134, 89, 0.1);
+        }
+
+        .empty-cart-icon {
+            font-size: 5rem;
+            color: var(--secondary-green);
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        /* Alert Styles */
         .alert-success {
             background: var(--light-green);
             border: 1px solid var(--secondary-green);
@@ -84,7 +220,14 @@
             border-radius: 15px;
         }
 
-        /* Enhanced Footer */
+        .alert-danger {
+            background: #fce8e8;
+            border: 1px solid #dc3545;
+            color: #dc3545;
+            border-radius: 15px;
+        }
+
+        /* Footer Styles */
         .main-footer {
             background: linear-gradient(135deg, #1e6b42 0%, #2d8659 100%);
             color: white;
@@ -165,40 +308,25 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Scroll to Top Button */
-        .scroll-to-top-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--gradient-green);
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(45, 134, 89, 0.3);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(0.8);
-        }
-
-        /* Navbar transparency on scroll */
+        /* Responsive improvements */
         @media (max-width: 768px) {
-            body {
-                padding-top: 60px;
+            .cart-hero {
+                padding: 60px 0 40px;
+            }
+            
+            .cart-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .cart-table {
+                font-size: 0.9rem;
+            }
+            
+            .cart-item-img {
+                width: 60px;
+                height: 60px;
             }
         }
-
-        .bg-light-green {
-        background-color: rgba(45, 134, 89, 0.05);
-        border: 1px solid rgba(45, 134, 89, 0.1);
-        border-radius: 15px;
-        }
-        
     </style>
 </head>
 <body>
@@ -231,9 +359,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('cart.index') }}">
+                        <a class="nav-link active" href="{{ route('cart.index') }}">
                             <i class="fas fa-shopping-cart me-1"></i> Keranjang
-                            @if(isset($cartCount) && $cartCount > 0)
+                            @if($cartCount > 0)
                                 <span class="badge bg-danger rounded-pill">{{ $cartCount }}</span>
                             @endif
                         </a>
@@ -267,10 +395,144 @@
         </div>
     </nav>
 
-    <!-- Page Content -->
-    <main>
-        @yield('content')
-    </main>
+    <!-- Hero Section for Cart -->
+    <section class="cart-hero">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-5 mb-4">Keranjang Belanja Anda</h1>
+                    <p class="lead mb-0">Lihat dan kelola produk yang akan Anda beli</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Content -->
+    <div class="container py-5">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if(count($cart) == 0)
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart empty-cart-icon"></i>
+                <h3 class="mb-3">Keranjang belanja Anda kosong</h3>
+                <p class="text-muted mb-4">Mulai berbelanja untuk melihat produk di keranjang Anda</p>
+                <a href="{{ route('dashboard') }}" class="btn btn-primary">
+                    <i class="fas fa-store me-2"></i> Belanja Sekarang
+                </a>
+            </div>
+        @else
+            <div class="cart-table">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="40%">Produk</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                                <th>Subtotal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($cart as $item)
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}" class="cart-item-img me-3">
+                                        <div>
+                                            <div class="product-name">{{ $item['name'] }}</div>
+                                            <div class="product-category">{{ $item['category'] }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="price-text">Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
+                                <td>
+                                    <div class="quantity-control">
+                                                <form action="{{ route('cart.decrease', $item['id']) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="quantity-btn">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </form>
+                                                
+                                                <span class="quantity-input">{{ $item['quantity'] }}</span>
+                                                
+                                                <form action="{{ route('cart.add', $item['id']) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    <button type="submit" class="quantity-btn">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    <td>
+                                        <form action="{{ route('cart.remove', $item['id']) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                </td>
+                                <td class="price-text">Rp {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}</td>
+                                <td>
+                                    <form action="{{ route('cart.remove', $item['id']) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end fw-bold">Total:</td>
+                                <td colspan="2" class="price-text fw-bold">Rp {{ number_format($total, 0, ',', '.') }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Di bagian tombol aksi keranjang -->
+                    <div class="p-4 d-flex justify-content-between align-items-center">
+                        <form action="{{ route('cart.clear') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i> Kosongkan Keranjang
+                            </button>
+                        </form>
+
+                        <div class="d-flex gap-3">
+                            <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Lanjut Belanja
+                            </a>
+                            <form action="{{ route('orders.checkout') }}" method="GET" class="d-inline">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-shopping-bag me-2"></i> Checkout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
 
     <!-- Footer -->
     <footer class="main-footer">
@@ -308,11 +570,11 @@
                         <div class="footer-section">
                             <h5>Navigasi</h5>
                             <ul>
-                                <li><a href="{{ route('dashboard') }}"><i class="fas fa-home me-1"></i>Beranda</a></li>
-                                <li><a href="{{ route('dashboard') }}#products"><i class="fas fa-shopping-bag me-1"></i>Produk</a></li>
-                                <li><a href="{{ route('dashboard') }}#features"><i class="fas fa-star me-1"></i>Fitur</a></li>
-                                <li><a href="{{ route('dashboard') }}#about"><i class="fas fa-info-circle me-1"></i>Tentang Kami</a></li>
-                                <li><a href="{{ route('dashboard') }}#contact"><i class="fas fa-envelope me-1"></i>Kontak</a></li>
+                                <li><a href="{{ route('dashboard') }}"><i class="fas fa-home"></i>Beranda</a></li>
+                                <li><a href="{{ route('dashboard') }}#products"><i class="fas fa-shopping-bag"></i>Produk</a></li>
+                                <li><a href="{{ route('dashboard') }}#features"><i class="fas fa-star"></i>Fitur</a></li>
+                                <li><a href="{{ route('dashboard') }}#about"><i class="fas fa-info-circle"></i>Tentang Kami</a></li>
+                                <li><a href="{{ route('dashboard') }}#contact"><i class="fas fa-envelope"></i>Kontak</a></li>
                             </ul>
                         </div>
                     </div>
@@ -321,11 +583,11 @@
                         <div class="footer-section">
                             <h5>Kategori Produk</h5>
                             <ul>
-                                <li><a href="#"><i class="fas fa-carrot me-1"></i>Sayuran Segar</a></li>
-                                <li><a href="#"><i class="fas fa-apple-alt me-1"></i>Buah-buahan</a></li>
-                                <li><a href="#"><i class="fas fa-seedling me-1"></i>Sayuran Organik</a></li>
-                                <li><a href="#"><i class="fas fa-pepper-hot me-1"></i>Bumbu & Rempah</a></li>
-                                <li><a href="#"><i class="fas fa-grain me-1"></i>Beras & Biji-bijian</a></li>
+                                <li><a href="#"><i class="fas fa-carrot"></i>Sayuran Segar</a></li>
+                                <li><a href="#"><i class="fas fa-apple-alt"></i>Buah-buahan</a></li>
+                                <li><a href="#"><i class="fas fa-seedling"></i>Sayuran Organik</a></li>
+                                <li><a href="#"><i class="fas fa-pepper-hot"></i>Bumbu & Rempah</a></li>
+                                <li><a href="#"><i class="fas fa-grain"></i>Beras & Biji-bijian</a></li>
                             </ul>
                         </div>
                     </div>
@@ -336,23 +598,23 @@
                             <ul>
                                 <li>
                                     <a href="tel:+62812345678">
-                                        <i class="fas fa-phone me-1"></i>+62 812-3456-7890
+                                        <i class="fas fa-phone"></i>+62 812-3456-7890
                                     </a>
                                 </li>
                                 <li>
                                     <a href="mailto:info@freshlokal.id">
-                                        <i class="fas fa-envelope me-1"></i>info@freshlokal.id
+                                        <i class="fas fa-envelope"></i>info@freshlokal.id
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" target="_blank">
-                                        <i class="fas fa-map-marker-alt me-1"></i>Jl. Raya Segar No. 123<br>
+                                        <i class="fas fa-map-marker-alt"></i>Jl. Raya Segar No. 123<br>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Surabaya, Jawa Timur 60119
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fas fa-clock me-1"></i>Senin - Sabtu: 08:00 - 20:00<br>
+                                        <i class="fas fa-clock"></i>Senin - Sabtu: 08:00 - 20:00<br>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Minggu: 08:00 - 18:00
                                     </a>
                                 </li>
@@ -367,7 +629,7 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-12 text-center text-lg-start">
-                        <p>&copy; {{ date('Y') }} FreshLokal. Semua hak cipta dilindungi.</p>
+                        <p>&copy; 2024 FreshLokal. Semua hak cipta dilindungi.</p>
                     </div>
                     <div class="col-lg-6 col-md-12 text-center text-lg-end">
                         <p>

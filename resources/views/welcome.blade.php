@@ -23,7 +23,7 @@
                         <div class="card-body p-4 p-sm-5">
                             <!-- Logo dan Header -->
                             <div class="text-center mb-4">
-                                <img src="https://cdn-icons-png.flaticon.com/512/2553/2553691.png" alt="Logo" class="img-fluid mb-4" style="width: 80px;">
+                                <img src="https ://cdn-icons-png.flaticon.com/512/2553/2553691.png" alt="Logo" class="img-fluid mb-4" style="width: 80px;">
                                 <h4 class="fw-bold">Selamat Datang di FreshLokal</h4>
                                 <p class="text-muted">Silakan masuk ke akun Anda</p>
                         </div>

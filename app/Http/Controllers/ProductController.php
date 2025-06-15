@@ -8,10 +8,16 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     public function index()
-    {
-        $products = Product::latest()->paginate(9);
-        return view('dashboard', compact('products'));
-    }
+{
+    $products = Product::where('is_available', true)
+                 ->latest()
+                 ->paginate(9);
+    
+    // Get cart count for the navbar
+    $cartCount = count(session()->get('cart', []));
+    
+    return view('dashboard', compact('products', 'cartCount'));
+}
 
     public function store(Request $request)
     {

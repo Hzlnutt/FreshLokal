@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -13,21 +14,46 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
+        // Basic statistics
         $totalProducts = Product::count();
         $totalOrders = Order::count();
         $totalUsers = User::where('role', 'user')->count();
         $totalRevenue = Order::where('status', 'completed')->sum('total_price');
+        
+        // Recent orders
         $recentOrders = Order::with(['user', 'product'])
             ->orderBy('created_at', 'desc')
             ->take(10)
             ->get();
+
+        // Revenue data for the chart (last 4 weeks)
+        $revenueData = [];
+        for ($i = 3; $i >= 0; $i--) {
+            $startDate = Carbon::now()->subWeeks($i)->startOfWeek();
+            $endDate = Carbon::now()->subWeeks($i)->endOfWeek();
+            
+            $revenueData[] = Order::where('status', 'completed')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->sum('total_price');
+        }
+
+        // Order status distribution for pie chart
+        $orderStatusData = [
+            'pending' => Order::where('status', 'pending')->count(),
+            'accepted' => Order::where('status', 'accepted')->count(),
+            'paid' => Order::where('status', 'paid')->count(),
+            'shipped' => Order::where('status', 'shipped')->count(),
+            'completed' => Order::where('status', 'completed')->count(),
+        ];
 
         return view('admin.dashboard', compact(
             'totalProducts',
             'totalOrders',
             'totalUsers',
             'totalRevenue',
-            'recentOrders'
+            'recentOrders',
+            'revenueData',
+            'orderStatusData'
         ));
     }
 
@@ -57,7 +83,7 @@ class AdminController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
         $image = $request->file('image');
@@ -69,6 +95,7 @@ class AdminController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
+            'status' => $request->stock > 0 ? 'ada' : 'habis',
             'image' => 'images/products/' . $imageName
         ]);
 
@@ -83,7 +110,7 @@ class AdminController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
         $data = [
@@ -91,6 +118,7 @@ class AdminController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
+            'status' => $request->stock > 0 ? 'ada' : 'habis',
         ];
 
         if ($request->hasFile('image')) {
@@ -132,13 +160,16 @@ class AdminController extends Controller
         $orders = Order::with(['user', 'product'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+            
         return view('admin.orders', compact('orders'));
     }
 
     public function users(Request $request)
     {
         $query = User::where('role', 'user')
-            ->withCount('orders');
+            ->withCount(['orders' => function($q) {
+                $q->where('status', 'completed');
+            }]);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -167,4 +198,4 @@ class AdminController extends Controller
 
         return back()->with('success', 'Status pesanan berhasil diperbarui');
     }
-} 
+}
