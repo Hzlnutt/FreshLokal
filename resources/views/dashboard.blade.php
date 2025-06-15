@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FreshLokal - Marketplace</title>
+    <title>FreshLokal - Marketplace Produk Segar</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,6 +24,35 @@
             background-color: #f8f9fa;
         }
 
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            margin-top: -24px;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: #20c997;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            background: #20c997;
+            color: white;
+            transform: translateY(-5px);
+        }
+
         h4, h5 {
             font-weight: 600;
         }
@@ -38,13 +67,14 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
-        /* .btn-primary {
-            background: linear-gradient(135deg, #28a745, #218838);
-            border: none;
-        } */
+        .btn-primary {
+            background-color: #20c997;
+            border-color: #20c997;
+        }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #218838, #1e7e34);
+            background-color: #1ba37f;
+            border-color: #1ba37f;
         }
 
         .badge.bg-primary {
@@ -86,15 +116,61 @@
 <body class="bg-light">
     @include('layouts.navigation')
 
-    <!-- Content -->
-    <div class="container py-5">
-        <!-- Header -->
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 mb-4 animate__animated animate__fadeInDown">Selamat Datang di FreshLokal</h1>
+            <p class="lead mb-5 animate__animated animate__fadeInUp">Temukan produk segar dan berkualitas langsung dari petani lokal untuk meja makan Anda</p>
+            <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp">
+                <a href="#products" class="btn btn-primary btn-lg">Jelajahi Produk</a>
+                <a href="#features" class="btn btn-outline-light btn-lg">Pelajari Lebih Lanjut</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Section -->
+    <section class="py-5" id="features">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="text-center feature-card">
+                        <div class="feature-icon mx-auto">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h5>Produk Segar</h5>
+                        <p class="text-muted">Dipetik langsung dari kebun, dijamin kesegaran dan kualitasnya</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center feature-card">
+                        <div class="feature-icon mx-auto">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <h5>Pengiriman Cepat</h5>
+                        <p class="text-muted">Layanan pengiriman express untuk menjaga kesegaran produk</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center feature-card">
+                        <div class="feature-icon mx-auto">
+                            <i class="fas fa-hand-holding-heart"></i>
+                        </div>
+                        <h5>Dukung Petani Lokal</h5>
+                        <p class="text-muted">Setiap pembelian membantu kesejahteraan petani lokal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produk Unggulan -->
+    <div class="container py-5" id="products">
         <div class="bg-white p-4 rounded shadow-sm mb-4 d-flex justify-content-between align-items-center">
             <div>
                 <h4 class="mb-1">
-                    <i class="fas fa-store me-2"></i> FreshLokal Marketplace
+                    <i class="fas fa-store me-2"></i> Produk Unggulan
                 </h4>
-                <p class="text-muted mb-0">Temukan produk segar dan berkualitas</p>
+                <p class="text-muted mb-0">Pilihan terbaik dari petani lokal</p>
             </div>
             <div class="d-flex gap-2">
                 <div class="input-group">
@@ -113,7 +189,7 @@
         </div>
         @endif
 
-        <!-- Products Grid -->
+        <!-- Produk Grid -->
         <div class="row g-4">
             @forelse($products as $product)
             <div class="col-12 col-md-6 col-lg-4">
