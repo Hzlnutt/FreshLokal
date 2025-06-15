@@ -287,42 +287,46 @@
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
                         <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Tanggal Registrasi</th>
-                                <th scope="col">Status Email</th>
-                                <th scope="col">Total Pesanan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($users as $user)
-                            <tr>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->created_at->format('d M Y H:i') }}</td>
-                                <td>
-                                    @if($user->email_verified_at)
-                                        <span class="badge bg-success">Terverifikasi</span>
-                                    @else
-                                        <span class="badge bg-warning">Belum Terverifikasi</span>
-                                    @endif
-                                </td>
-                                <td>{{ $user->orders_count ?? 0 }}</td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="6" class="text-center py-4">
-                                    <div class="empty-state">
-                                        <i class="fas fa-users-slash"></i>
-                                        <h5>Tidak ada pengguna ditemukan</h5>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nama</th>
+        <th scope="col">Email</th>
+        <th scope="col">Tanggal Registrasi</th>
+        <th scope="col">Status Email</th>
+        <th scope="col">Total Pesanan</th>
+    </tr>
+</thead>
+<tbody>
+    @forelse($users as $user)
+    <tr>
+        <td>{{ $user->id }}</td>
+        <td>{{ $user->name }}</td>
+        <td>{{ $user->email }}</td>
+        <td>{{ $user->created_at->format('d M Y H:i') }}</td>
+        <td>
+            @if($user->email_verified_at)
+                <span class="badge bg-success">Terverifikasi</span>
+            @else
+                <span class="badge bg-warning">Belum Terverifikasi</span>
+            @endif
+        </td>
+        <td>
+            <span class="badge bg-primary">
+                {{ $user->orders_count }} pesanan
+            </span>
+        </td>
+    </tr>
+    @empty
+    <tr>
+        <td colspan="6" class="text-center py-4">
+            <div class="empty-state">
+                <i class="fas fa-users-slash"></i>
+                <h5>Tidak ada pengguna ditemukan</h5>
+            </div>
+        </td>
+    </tr>
+    @endforelse
+</tbody>
                     </table>
                 </div>
             </div>

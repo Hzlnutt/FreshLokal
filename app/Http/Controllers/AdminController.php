@@ -176,15 +176,13 @@ class AdminController extends Controller
     public function users(Request $request)
     {
         $query = User::where('role', 'user')
-            ->withCount(['orders' => function($q) {
-                $q->where('status', 'completed');
-            }]);
+            ->withCount(['orders']); // Hitung SEMUA pesanan tanpa filter status
 
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
