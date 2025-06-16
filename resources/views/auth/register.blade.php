@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>FreshLokal - Daftar</title>
         
         <!-- Bootstrap CSS -->
@@ -12,31 +13,198 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         
         <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    </head>
-    <body class="bg-light">
-        <div class="container">
-            <div class="row justify-content-center align-items-center min-vh-100">
-                <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
-                    <div class="card border-0 shadow-sm rounded-4">
-                        <div class="card-body p-4 p-sm-5">
-                            <!-- Logo dan Header -->
-                            <div class="text-center mb-4">
-                                <img src="https://cdn-icons-png.flaticon.com/512/2553/2553691.png" alt="Logo" class="img-fluid mb-4" style="width: 80px;">
-                                <h4 class="fw-bold">Daftar di FreshLokal</h4>
-                                <p class="text-muted">Buat akun baru Anda</p>
-                            </div>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-                            <!-- Form Register -->
+        <style>
+            :root {
+                --primary-green: #2d8659;
+                --secondary-green: #3da96b;
+                --light-green: #e8f5e8;
+                --accent-green: #1e6b42;
+                --gradient-green: linear-gradient(135deg, #2d8659 0%, #3da96b 100%);
+                --dark-text: #2c3e50;
+                --muted-text: #6c757d;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                background: linear-gradient(135deg, #f8fffe 0%, #f0f9f4 100%);
+                color: var(--dark-text);
+                line-height: 1.6;
+            }
+
+            .login-container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .login-card {
+                border: none;
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(45, 134, 89, 0.15);
+                overflow: hidden;
+                transition: all 0.4s ease;
+            }
+
+            .login-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 50px rgba(45, 134, 89, 0.25);
+            }
+
+            .login-header {
+                background: var(--gradient-green);
+                color: white;
+                padding: 2rem;
+                text-align: center;
+            }
+
+            .login-header img {
+                width: 80px;
+                margin-bottom: 1rem;
+                filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
+            }
+
+            .login-body {
+                padding: 2.5rem;
+                background: white;
+            }
+
+            .form-control {
+                border-radius: 12px;
+                padding: 12px 15px;
+                border: 2px solid rgba(45, 134, 89, 0.1);
+            }
+
+            .form-control:focus {
+                border-color: var(--primary-green);
+                box-shadow: 0 0 0 0.2rem rgba(45, 134, 89, 0.25);
+            }
+
+            .input-group-text {
+                background: transparent;
+                border-right: none;
+            }
+
+            .btn-primary {
+                background: var(--gradient-green);
+                border: none;
+                padding: 12px;
+                font-weight: 500;
+                border-radius: 50px;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(45, 134, 89, 0.3);
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(45, 134, 89, 0.4);
+                background: linear-gradient(135deg, #1e6b42 0%, #2d8659 100%);
+            }
+
+            .btn-google {
+                background: white;
+                color: #4285F4;
+                border: 1px solid #ddd;
+                border-radius: 50px;
+                padding: 10px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                width: 100%;
+            }
+
+            .btn-google:hover {
+                background: #f8f9fa;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+
+            .divider {
+                display: flex;
+                align-items: center;
+                margin: 1.5rem 0;
+            }
+
+            .divider::before, .divider::after {
+                content: "";
+                flex: 1;
+                border-bottom: 1px solid rgba(45, 134, 89, 0.1);
+            }
+
+            .divider-text {
+                padding: 0 1rem;
+                color: var(--muted-text);
+                font-size: 0.9rem;
+            }
+
+            .alert-success {
+                background: var(--light-green);
+                border: 1px solid var(--secondary-green);
+                color: var(--accent-green);
+                border-radius: 15px;
+            }
+
+            .alert-danger {
+                border-radius: 15px;
+            }
+
+            .text-accent {
+                color: var(--primary-green);
+            }
+
+            .link-accent {
+                color: var(--primary-green);
+                font-weight: 500;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+            .link-accent:hover {
+                color: var(--accent-green);
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="min-vh-100 d-flex align-items-center">
+            <div class="container">
+                <div class="login-container">
+                    <div class="login-card">
+                        <div class="login-header">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2553/2553691.png" alt="FreshLokal Logo">
+                            <h3 class="fw-bold mb-0">FreshLokal</h3>
+                            <p class="mb-0 opacity-75">Marketplace Produk Lokal</p>
+                        </div>
+                        
+                        <div class="login-body">
+                            <!-- Validation Errors -->
+                            @if ($errors->any())
+                                <div class="alert alert-danger mb-4">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <!-- Register Form -->
                             <form method="POST" action="{{ route('register') }}">
                                 @csrf
-                                <!-- Nama -->
-                                <div class="mb-4">
+                                <!-- Name -->
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Nama Lengkap</label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-transparent border-end-0">
+                                        <span class="input-group-text bg-transparent">
                                             <i class="fas fa-user text-muted"></i>
                                         </span>
-                                        <input type="text" class="form-control border-start-0 ps-0" name="name" placeholder="Nama Lengkap" required autofocus>
+                                        <input type="text" 
+                                               class="form-control @error('name') is-invalid @enderror" 
+                                               id="name" 
+                                               name="name" 
+                                               value="{{ old('name') }}"
+                                               placeholder="Nama Lengkap" 
+                                               required 
+                                               autofocus>
                                     </div>
                                     @error('name')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
@@ -44,68 +212,81 @@
                                 </div>
 
                                 <!-- Email -->
-                                <div class="mb-4">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-transparent border-end-0">
+                                        <span class="input-group-text bg-transparent">
                                             <i class="fas fa-envelope text-muted"></i>
                                         </span>
-                                        <input type="email" class="form-control border-start-0 ps-0" name="email" placeholder="Alamat Email" required>
+                                        <input type="email" 
+                                               class="form-control @error('email') is-invalid @enderror" 
+                                               id="email" 
+                                               name="email" 
+                                               value="{{ old('email') }}"
+                                               placeholder="email@contoh.com" 
+                                               required>
                                     </div>
                                     @error('email')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                
+
                                 <!-- Password -->
-                                <div class="mb-4">
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-transparent border-end-0">
+                                        <span class="input-group-text bg-transparent">
                                             <i class="fas fa-lock text-muted"></i>
                                         </span>
-                                        <input type="password" class="form-control border-start-0 ps-0" name="password" placeholder="Password" required>
+                                        <input type="password" 
+                                               class="form-control @error('password') is-invalid @enderror" 
+                                               id="password" 
+                                               name="password" 
+                                               placeholder="••••••••" 
+                                               required>
                                     </div>
                                     @error('password')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <!-- Konfirmasi Password -->
+                                <!-- Confirm Password -->
                                 <div class="mb-4">
+                                    <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-transparent border-end-0">
+                                        <span class="input-group-text bg-transparent">
                                             <i class="fas fa-lock text-muted"></i>
                                         </span>
-                                        <input type="password" class="form-control border-start-0 ps-0" name="password_confirmation" placeholder="Konfirmasi Password" required>
+                                        <input type="password" 
+                                               class="form-control" 
+                                               id="password_confirmation" 
+                                               name="password_confirmation" 
+                                               placeholder="••••••••" 
+                                               required>
                                     </div>
                                 </div>
-                                
-                                <button type="submit" class="btn btn-primary w-100 py-2 mb-4 fw-semibold">Daftar Sekarang</button>
-                                
-                                <div class="position-relative mb-4">
-                                    <hr class="text-muted">
-                                    <div class="position-absolute top-50 start-50 translate-middle bg-white px-3">
-                                        <span class="text-muted">atau daftar dengan</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="d-flex justify-content-center gap-2 mb-4">
-                                    <a href="http://localhost:8000/auth/google" class="btn btn-outline-secondary rounded-circle p-2">
-                                        <i class="fab fa-google"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-outline-secondary rounded-circle p-2">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-outline-secondary rounded-circle p-2">
-                                        <i class="fab fa-twitter"></i>
-                                    </a>
-                                </div>
-                                
-                                <div class="text-center">
-                                    <p class="mb-0">Sudah punya akun? 
-                                        <a href="{{ route('login') }}" class="text-decoration-none">Masuk sekarang</a>
-                                    </p>
-                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100 mb-3">
+                                    <i class="fas fa-user-plus me-2"></i>Daftar Sekarang
+                                </button>
                             </form>
+
+                            <div class="divider">
+                                <span class="divider-text">atau daftar dengan</span>
+                            </div>
+
+                            <div class="text-center mb-4">
+                                <a href="{{ url('/auth/google') }}" class="btn btn-google">
+                                    <img src="https://img.lovepik.com/png/20231120/google-internet-icon-vector-Google-system-engineer_642910_wh1200.png" alt="Google Logo" width="20" class="me-2">
+                                    Daftar dengan Google
+                                </a>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <p class="mb-0">Sudah punya akun? 
+                                    <a href="{{ route('login') }}" class="link-accent">Masuk sekarang</a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

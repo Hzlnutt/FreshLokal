@@ -579,8 +579,8 @@
         </div>
         <div class="d-flex gap-2">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Cari produk...">
-                <button class="btn btn-primary">
+                <input type="text" id="searchInput" class="form-control search-input" placeholder="Cari produk..." aria-label="Cari produk" aria-describedby="searchButton">
+                <button class="btn btn-primary" id="searchButton" type="button">
                     <i class="fas fa-search"></i>
                 </button>
             </div>
@@ -894,32 +894,48 @@
             }
         });
 
-        // Search functionality
-        const searchInput = document.querySelector('.search-input');
-        const searchBtn = document.querySelector('.search-btn');
-        
-        searchBtn.addEventListener('click', function() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const productCards = document.querySelectorAll('.product-card');
-            
-            productCards.forEach(card => {
-                const productName = card.querySelector('.card-title').textContent.toLowerCase();
-                const productDesc = card.querySelector('.card-text').textContent.toLowerCase();
-                
-                if (productName.includes(searchTerm) || productDesc.includes(searchTerm) || searchTerm === '') {
-                    card.parentElement.style.display = 'block';
-                } else {
-                    card.parentElement.style.display = 'none';
-                }
-            });
-        });
+        // Ganti seluruh bagian search functionality dengan ini:
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('searchInput');
+                const searchButton = document.getElementById('searchButton');
+                const productCards = document.querySelectorAll('.col-12.col-md-6.col-lg-4'); // Target parent div dari product card
 
-        // Search on Enter key
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchBtn.click();
-            }
-        });
+                function performSearch() {
+                    const searchTerm = searchInput.value.toLowerCase().trim();
+                    
+                    productCards.forEach(card => {
+                        const productName = card.querySelector('.card-title').textContent.toLowerCase();
+                        const productDesc = card.querySelector('.card-text').textContent.toLowerCase();
+                        const productCategory = card.querySelector('.badge.bg-primary').textContent.toLowerCase();
+                        
+                        if (searchTerm === '' || 
+                            productName.includes(searchTerm) || 
+                            productDesc.includes(searchTerm) ||
+                            productCategory.includes(searchTerm)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+
+                // Search ketika tombol diklik
+                searchButton.addEventListener('click', performSearch);
+                
+                // Search ketika tekan Enter
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performSearch();
+                    }
+                });
+                
+                // Reset search ketika input dikosongkan
+                searchInput.addEventListener('input', function() {
+                    if (this.value === '') {
+                        performSearch();
+                    }
+                });
+            });
 
         // Newsletter subscription
         document.querySelector('.newsletter-section .btn-light').addEventListener('click', function() {
